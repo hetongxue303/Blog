@@ -1,0 +1,65 @@
+# 基础配置
+server:
+  port: 8000
+
+spring:
+  # 数据源配置
+  datasource:
+    username: mpw:QxbmBFm6BukNQJCzgB5bdw==
+    password: mpw:Q8SCW29yUiqGxQLbbAoTng==
+    url: mpw:P0Pm9QNNryWxpit8nO5mTRH+eLwuDvp+26j9wwJ2SOUZpjmow9ApCNLL9oFVqRd6+HIOhn6lUtRIy1XA3DQnIqqQm437kQCsnVSSdN7nrBnhqM0n2qNuAzI51s6L7xP3NMoi+OZ3grXZtG4+yhbLJs6sfcMyQ4kSwJ84tg5/MlNKtMJm5tPW+13LgJeIynkArVrQlTRcGihv8/Ahlo9qw7GDpYmhB4d7KEyAbwMg4dSFhMbGjJZq7/Bu5sWgAM5s
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-connect-error-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  # redis 配置
+  data:
+    redis:
+      host: 47.113.147.153
+      port: 6379
+      username:
+      password: 123456
+      database: 0
+      timeout: 5000
+      lettuce:
+        pool:
+          max-active: 50
+          max-wait: 3000
+          max-idle: 20
+          min-idle: 2
+
+  # 自定义配置
+  config:
+    import: application-custom.yml
+
+# mybatis plus 配置
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      logic-delete-field: isDel
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      id-type: auto
+
+# 日志配置
+logging:
+  level:
+    root: info
+    com.blog.mapper: debug
+

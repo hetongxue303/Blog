@@ -1,0 +1,5 @@
+jwt:
+  config:
+    secret: 11g18h1h8h1y8y18hfy4
+    header: Authorization
+    expiration: 604800
