@@ -42,7 +42,7 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tags> implements TagS
     public Result selectPage(SearchVo searchVo) {
         LambdaQueryWrapper<Tags> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Tags::getStatus, SystemConstants.STATUS_ENABLED);
-        wrapper.like(Objects.nonNull(searchVo.getTagName()), Tags::getName, searchVo.getTagName());
+        wrapper.like(Objects.nonNull(searchVo.getName()), Tags::getName, searchVo.getName());
         Page<Tags> data = tagMapper.selectPage(MBPUtil.generatePage(searchVo, Tags.class), wrapper);
         return Result.success(new ResultPage(data.getTotal(), data.getRecords()));
     }

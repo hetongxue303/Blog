@@ -1,7 +1,9 @@
 package com.blog.domain.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
@@ -9,7 +11,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 标签VO
+ * 分类VO
  *
  * @author hy
  * @version 1.0
@@ -18,13 +20,13 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-@Schema(name = "标签VO")
-public class TagVo implements Serializable {
+@Schema(name = "分类VO")
+public class CategoryVo implements Serializable {
 
     @Schema(title = "ID")
     private Long id;
-    @Schema(title = "标签名")
-    @NotBlank(message = "标签名不能为空")
+    @Schema(title = "分类名")
+    @NotBlank(message = "分类名不能为空")
     private String name;
     @Schema(title = "备注")
     private String remark;

@@ -27,7 +27,7 @@ public class Tags implements Serializable {
     @TableId
     @Schema(title = "ID")
     private Long id;
-    @Schema(title = "名称")
+    @Schema(title = "标签名")
     private String name;
     @Schema(title = "备注")
     private String remark;
