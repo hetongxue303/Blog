@@ -1,8 +1,6 @@
 package com.blog.domain.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,9 +20,9 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-@TableName("blog_tag")
+@TableName("blog_tags")
 @Schema(name = "标签实体")
-public class Tag implements Serializable {
+public class Tags implements Serializable {
 
     @TableId
     @Schema(title = "ID")
@@ -41,10 +39,12 @@ public class Tag implements Serializable {
     @Schema(title = "创建人")
     private Long createBy;
     @Schema(title = "创建时间")
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
     @Schema(title = "更新人")
     private Long updateBy;
     @Schema(title = "更新时间")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
 }

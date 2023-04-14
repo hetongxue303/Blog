@@ -1,7 +1,7 @@
 package com.blog.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.blog.domain.entity.Tag;
+import com.blog.domain.entity.Tags;
 
 /**
  * 标签Mapper
@@ -9,6 +9,6 @@ import com.blog.domain.entity.Tag;
  * @author hy
  * @version 1.0
  */
-public interface TagMapper extends BaseMapper<Tag> {
+public interface TagMapper extends BaseMapper<Tags> {
 
 }

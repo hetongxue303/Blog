@@ -3,14 +3,15 @@ package com.blog.controller;
 import com.blog.annotation.Logging;
 import com.blog.domain.dto.Result;
 import com.blog.domain.vo.SearchVo;
+import com.blog.domain.vo.TagVo;
 import com.blog.service.TagService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 标签模块
@@ -20,7 +21,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("tags")
-@Tag(name = "标签模块", description = "标签模块的描述")
+@Tag(name = "标签模块", description = "标签模块")
 public class TagController {
 
     @Resource
@@ -28,16 +29,45 @@ public class TagController {
 
     @GetMapping("all")
     @Logging("查询所有标签")
-    @Operation(summary = "获取所有标签", description = "获取所有标签")
-    public Result getTagsAll() {
+    @Operation(summary = "获取所有标签")
+    public Result getTagAll() {
         return tagService.selectList();
     }
 
     @GetMapping("page")
-    @Logging("分页获取标签")
-    @Operation(summary = "分页获取标签", description = "分页获取标签")
-    public Result getTagsAdmin(SearchVo searchVo) {
-        return tagService.searchList(searchVo);
+    @Logging("分页/搜索标签")
+    @Operation(summary = "分页/搜索标签")
+    public Result getTagPage(SearchVo searchVo) {
+        return tagService.selectPage(searchVo);
     }
+
+    @PostMapping("add")
+    @Logging("添加标签")
+    @Operation(summary = "添加标签")
+    public Result addTag(@Valid @RequestBody TagVo tagVo) {
+        return tagService.saveTag(tagVo);
+    }
+
+    @PutMapping("update")
+    @Logging("更新标签")
+    @Operation(summary = "更新标签")
+    public Result updateTag(@Valid @RequestBody TagVo tagVo) {
+        return tagService.updateTag(tagVo);
+    }
+
+    @DeleteMapping("delete/{id}")
+    @Logging("删除标签")
+    @Operation(summary = "删除标签", description = "根据ID删除标签")
+    public Result removeTag(@Valid @PathVariable("id") Long id) {
+        return tagService.deleteTag(id);
+    }
+
+    @DeleteMapping("delete/batch")
+    @Logging("批量删除标签")
+    @Operation(summary = "批量删除标签", description = "根据ID列表批量删除标签")
+    public Result batchRemoveTag(@Valid @RequestBody List<Long> ids) {
+        return tagService.batchDeleteTag(ids);
+    }
+
 
 }

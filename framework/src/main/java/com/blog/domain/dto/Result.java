@@ -80,4 +80,8 @@ public class Result implements Serializable {
     public static Result error(Integer code, String message) {
         return new Result(code, message);
     }
+
+    public static Result isStatus(Integer status) {
+        return status > 0 ? success() : fail();
+    }
 }

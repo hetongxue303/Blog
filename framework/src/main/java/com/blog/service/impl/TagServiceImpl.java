@@ -6,14 +6,19 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.blog.constants.SystemConstants;
 import com.blog.domain.dto.Result;
 import com.blog.domain.dto.ResultPage;
-import com.blog.domain.entity.Tag;
+import com.blog.domain.entity.Tags;
 import com.blog.domain.vo.SearchVo;
+import com.blog.domain.vo.TagVo;
+import com.blog.handler.exception.customs.SystemException;
 import com.blog.mapper.TagMapper;
 import com.blog.service.TagService;
+import com.blog.utils.BeanCopyUtil;
 import com.blog.utils.MBPUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -23,22 +28,66 @@ import java.util.Objects;
  * @version 1.0
  */
 @Service
-public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagService {
+public class TagServiceImpl extends ServiceImpl<TagMapper, Tags> implements TagService {
 
     @Resource
     private TagMapper tagMapper;
 
     @Override
     public Result selectList() {
-        return Result.success(this.list());
+        return Result.success(tagMapper.selectList(null));
     }
 
     @Override
-    public Result searchList(SearchVo searchVo) {
-        LambdaQueryWrapper<Tag> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Tag::getStatus, SystemConstants.STATUS_ENABLED);
-        wrapper.like(Objects.nonNull(searchVo.getTagName()), Tag::getName, searchVo.getTagName());
-        Page<Tag> data = tagMapper.selectPage(MBPUtil.generatePage(searchVo, Tag.class), wrapper);
+    public Result selectPage(SearchVo searchVo) {
+        LambdaQueryWrapper<Tags> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Tags::getStatus, SystemConstants.STATUS_ENABLED);
+        wrapper.like(Objects.nonNull(searchVo.getTagName()), Tags::getName, searchVo.getTagName());
+        Page<Tags> data = tagMapper.selectPage(MBPUtil.generatePage(searchVo, Tags.class), wrapper);
         return Result.success(new ResultPage(data.getTotal(), data.getRecords()));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result saveTag(TagVo tagVo) {
+        // 1.判断是否存在相同标签名
+        LambdaQueryWrapper<Tags> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Objects.nonNull(tagVo.getName()), Tags::getName, tagVo.getName());
+        Tags tags = tagMapper.selectOne(wrapper);
+        if (Objects.nonNull(tags))
+            throw new SystemException("标签名已存在");
+        // 2.保存标签 并返回结果
+        return Result.isStatus(tagMapper.insert(BeanCopyUtil.copyBean(tagVo, Tags.class)));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result updateTag(TagVo tagVo) {
+        // 1.判断是否存在相同标签名
+        LambdaQueryWrapper<Tags> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Objects.nonNull(tagVo.getName()), Tags::getName, tagVo.getName());
+        Tags tags = tagMapper.selectOne(wrapper);
+        if (Objects.nonNull(tags) && Objects.deepEquals(tagVo.getId(), tags.getId()))
+            throw new SystemException("标签名已存在");
+        // 2.保存标签 并返回结果
+        return Result.isStatus(tagMapper.updateById(BeanCopyUtil.copyBean(tagVo, Tags.class)));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result deleteTag(Long id) {
+        // TODO 1.判断该标签下是否存在文章
+        // select count(*) form 文章表 in (id); 如果大于0则表示：删除失败，该标签下存在文章
+        // 2.删除标签 并返回结果
+        return Result.isStatus(tagMapper.deleteById(id));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result batchDeleteTag(List<Long> ids) {
+        // TODO 1.判断该标签下是否存在文章
+        // select count(*) form 文章表 in (ids); 如果大于0则表示：删除失败，该标签下存在文章
+        // 2.删除标签 并返回结果
+        return Result.isStatus(tagMapper.deleteBatchIds(ids));
     }
 }
