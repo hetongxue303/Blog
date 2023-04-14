@@ -2,9 +2,9 @@ package com.blog.utils;
 
 import com.blog.handler.exception.customs.SystemException;
 import io.jsonwebtoken.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;

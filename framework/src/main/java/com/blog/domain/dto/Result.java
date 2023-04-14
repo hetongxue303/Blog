@@ -1,4 +1,4 @@
-package com.blog.domain;
+package com.blog.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,6 +21,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Accessors(chain = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@SuppressWarnings("all")
 @Schema(name = "统一响应模型")
 public class Result implements Serializable {
 

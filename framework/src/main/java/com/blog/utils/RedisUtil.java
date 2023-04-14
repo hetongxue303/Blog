@@ -1,11 +1,11 @@
 package com.blog.utils;
 
-import jakarta.annotation.Resource;
 import org.springframework.data.redis.connection.DataType;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.TimeUnit;

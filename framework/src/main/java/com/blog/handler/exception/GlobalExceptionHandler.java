@@ -1,6 +1,6 @@
 package com.blog.handler.exception;
 
-import com.blog.domain.Result;
+import com.blog.domain.dto.Result;
 import com.blog.handler.exception.customs.SystemException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

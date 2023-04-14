@@ -1,9 +1,9 @@
 package com.blog.utils;
 
-import com.blog.domain.Result;
+import com.blog.domain.dto.Result;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletResponse;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**

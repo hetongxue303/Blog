@@ -8,4 +8,7 @@ package com.blog.constants;
  */
 public class SystemConstants {
 
+    public static final Boolean STATUS_ENABLED = true;
+    public static final Boolean STATUS_DISABLED = false;
+
 }
