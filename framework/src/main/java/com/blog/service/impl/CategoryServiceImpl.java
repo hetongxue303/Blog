@@ -34,12 +34,12 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     private CategoryMapper categoryMapper;
 
     @Override
-    public Result selectList() {
+    public Result selectAll() {
         return Result.success(categoryMapper.selectList(null));
     }
 
     @Override
-    public Result selectPage(SearchVo searchVo) {
+    public Result selectList(SearchVo searchVo) {
         LambdaQueryWrapper<Category> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Category::getStatus, SystemConstant.STATUS_ENABLED)
                 .like(Objects.nonNull(searchVo.getKeywords()), Category::getName, searchVo.getKeywords())

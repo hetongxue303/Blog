@@ -196,6 +196,14 @@ public class RedisUtil {
         return redisTemplate.expire(key, timeout, timeUnit);
     }
 
+    public Long incrExpire(String key, long time) {
+        Long count = redisTemplate.opsForValue().increment(key, 1);
+        if (count != null && count == 1) {
+            redisTemplate.expire(key, time, TimeUnit.SECONDS);
+        }
+        return count;
+    }
+
     /**
      * 设置 key 的过期时间
      *

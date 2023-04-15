@@ -5,6 +5,8 @@ import com.blog.domain.dto.Result;
 import com.blog.domain.entity.ExceptionLog;
 import com.blog.domain.vo.SearchVo;
 
+import java.util.List;
+
 /**
  * 异常日志业务
  *
@@ -15,6 +17,9 @@ public interface ExceptionLogService extends IService<ExceptionLog> {
 
     void saveExceptionLog(ExceptionLog exceptionLog);
 
-    Result selectPage(SearchVo searchVo);
+    Result selectList(SearchVo searchVo);
 
+    Result deleteException(Long id);
+
+    Result batchDeleteException(List<Long> ids);
 }

@@ -5,6 +5,8 @@ import com.blog.domain.dto.Result;
 import com.blog.domain.entity.OperationLog;
 import com.blog.domain.vo.SearchVo;
 
+import java.util.List;
+
 /**
  * 操作日志业务
  *
@@ -18,6 +20,9 @@ public interface OperationLogService extends IService<OperationLog> {
      */
     void saveOperationLog(OperationLog operationLog);
 
-    Result selectPage(SearchVo searchVo);
+    Result selectList(SearchVo searchVo);
 
+    Result deleteOperationLogs(Long id);
+
+    Result batchDeleteOperationLogs(List<Long> ids);
 }

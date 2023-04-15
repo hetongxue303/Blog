@@ -21,7 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("category")
-@Tag(name = "分类模块", description = "分类模块")
+@Tag(name = "分类模块")
 public class CategoryController {
 
     @Resource
@@ -31,14 +31,14 @@ public class CategoryController {
     @Logging("查询所有分类")
     @Operation(summary = "获取所有分类")
     public Result getCategoryAll() {
-        return categoryService.selectList();
+        return categoryService.selectAll();
     }
 
     @GetMapping("page")
     @Logging("分页/搜索分类")
     @Operation(summary = "分页/搜索分类")
     public Result getCategoryPage(SearchVo searchVo) {
-        return categoryService.selectPage(searchVo);
+        return categoryService.selectList(searchVo);
     }
 
     @PostMapping("add")
@@ -58,14 +58,14 @@ public class CategoryController {
     @DeleteMapping("delete/{id}")
     @Logging("删除分类")
     @Operation(summary = "删除分类", description = "根据ID删除分类")
-    public Result removeCategory(@Valid @PathVariable("id") Long id) {
+    public Result removeCategory(@PathVariable("id") Long id) {
         return categoryService.deleteCategory(id);
     }
 
-    @DeleteMapping("delete/batch")
+    @DeleteMapping("batchDelete")
     @Logging("批量删除分类")
     @Operation(summary = "批量删除分类", description = "根据ID列表批量删除分类")
-    public Result batchRemoveCategory(@Valid @RequestBody List<Long> ids) {
+    public Result batchRemoveCategory(@RequestBody List<Long> ids) {
         return categoryService.batchDeleteCategory(ids);
     }
 

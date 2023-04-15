@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -35,11 +36,23 @@ public class ExceptionLogServiceImpl extends ServiceImpl<ExceptionLogMapper, Exc
     }
 
     @Override
-    public Result selectPage(SearchVo searchVo) {
+    public Result selectList(SearchVo searchVo) {
         LambdaQueryWrapper<ExceptionLog> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(Objects.nonNull(searchVo.getKeywords()), ExceptionLog::getOptDesc, searchVo.getKeywords())
                 .orderByDesc(ExceptionLog::getId);
         Page<ExceptionLog> data = exceptionLogMapper.selectPage(MBPUtil.generatePage(searchVo, ExceptionLog.class), wrapper);
         return Result.success(new ResultPage(data.getTotal(), data.getRecords()));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result deleteException(Long id) {
+        return Result.isStatus(exceptionLogMapper.deleteById(id));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result batchDeleteException(List<Long> ids) {
+        return Result.isStatus(exceptionLogMapper.deleteBatchIds(ids));
     }
 }

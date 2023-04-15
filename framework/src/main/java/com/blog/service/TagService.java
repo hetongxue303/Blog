@@ -19,14 +19,14 @@ public interface TagService extends IService<Tags> {
     /**
      * 查询所有标签
      */
-    Result selectList();
+    Result selectAll();
 
     /**
      * 分页查询标签
      *
      * @param searchVo 查询条件
      */
-    Result selectPage(SearchVo searchVo);
+    Result selectList(SearchVo searchVo);
 
     /**
      * 保存标签

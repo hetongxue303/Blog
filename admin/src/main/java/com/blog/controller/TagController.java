@@ -21,7 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("tags")
-@Tag(name = "标签模块", description = "标签模块")
+@Tag(name = "标签模块")
 public class TagController {
 
     @Resource
@@ -31,14 +31,14 @@ public class TagController {
     @Logging("查询所有标签")
     @Operation(summary = "获取所有标签")
     public Result getTagAll() {
-        return tagService.selectList();
+        return tagService.selectAll();
     }
 
-    @GetMapping("page")
+    @GetMapping("list")
     @Logging("分页/搜索标签")
     @Operation(summary = "分页/搜索标签")
     public Result getTagPage(SearchVo searchVo) {
-        return tagService.selectPage(searchVo);
+        return tagService.selectList(searchVo);
     }
 
     @PostMapping("add")
@@ -58,14 +58,14 @@ public class TagController {
     @DeleteMapping("delete/{id}")
     @Logging("删除标签")
     @Operation(summary = "删除标签", description = "根据ID删除标签")
-    public Result removeTag(@Valid @PathVariable("id") Long id) {
+    public Result removeTag(@PathVariable("id") Long id) {
         return tagService.deleteTag(id);
     }
 
-    @DeleteMapping("delete/batch")
+    @DeleteMapping("batchDelete")
     @Logging("批量删除标签")
     @Operation(summary = "批量删除标签", description = "根据ID列表批量删除标签")
-    public Result batchRemoveTag(@Valid @RequestBody List<Long> ids) {
+    public Result batchRemoveTag(@RequestBody List<Long> ids) {
         return tagService.batchDeleteTag(ids);
     }
 

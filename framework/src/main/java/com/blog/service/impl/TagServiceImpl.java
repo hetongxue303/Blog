@@ -34,12 +34,12 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tags> implements TagS
     private TagMapper tagMapper;
 
     @Override
-    public Result selectList() {
+    public Result selectAll() {
         return Result.success(tagMapper.selectList(null));
     }
 
     @Override
-    public Result selectPage(SearchVo searchVo) {
+    public Result selectList(SearchVo searchVo) {
         LambdaQueryWrapper<Tags> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Tags::getStatus, SystemConstant.STATUS_ENABLED)
                 .like(Objects.nonNull(searchVo.getKeywords()), Tags::getName, searchVo.getKeywords())

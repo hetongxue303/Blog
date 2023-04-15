@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -35,7 +36,19 @@ public class OperationLogServiceImpl extends ServiceImpl<OperationLogMapper, Ope
     }
 
     @Override
-    public Result selectPage(SearchVo searchVo) {
+    @Transactional(rollbackFor = Exception.class)
+    public Result deleteOperationLogs(Long id) {
+        return Result.isStatus(operationLogMapper.deleteById(id));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result batchDeleteOperationLogs(List<Long> ids) {
+        return Result.isStatus(operationLogMapper.deleteBatchIds(ids));
+    }
+
+    @Override
+    public Result selectList(SearchVo searchVo) {
         LambdaQueryWrapper<OperationLog> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(Objects.nonNull(searchVo.getKeywords()), OperationLog::getOptModule, searchVo.getKeywords()).or()
                 .like(Objects.nonNull(searchVo.getKeywords()), OperationLog::getOptDesc, searchVo.getKeywords())

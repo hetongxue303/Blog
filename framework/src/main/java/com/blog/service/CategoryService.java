@@ -20,14 +20,14 @@ public interface CategoryService extends IService<Category> {
     /**
      * 查询所有分类
      */
-    Result selectList();
+    Result selectAll();
 
     /**
      * 分页查询分类
      *
      * @param searchVo 查询条件
      */
-    Result selectPage(SearchVo searchVo);
+    Result selectList(SearchVo searchVo);
 
     /**
      * 保存分类
