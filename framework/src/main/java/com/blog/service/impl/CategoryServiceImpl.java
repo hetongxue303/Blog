@@ -3,7 +3,7 @@ package com.blog.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.blog.constants.SystemConstants;
+import com.blog.constants.SystemConstant;
 import com.blog.domain.dto.Result;
 import com.blog.domain.dto.ResultPage;
 import com.blog.domain.entity.Category;
@@ -41,8 +41,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     @Override
     public Result selectPage(SearchVo searchVo) {
         LambdaQueryWrapper<Category> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Category::getStatus, SystemConstants.STATUS_ENABLED);
-        wrapper.like(Objects.nonNull(searchVo.getName()), Category::getName, searchVo.getName());
+        wrapper.eq(Category::getStatus, SystemConstant.STATUS_ENABLED)
+                .like(Objects.nonNull(searchVo.getKeywords()), Category::getName, searchVo.getKeywords())
+                .orderByDesc(Category::getId);
         Page<Category> data = categoryMapper.selectPage(MBPUtil.generatePage(searchVo, Category.class), wrapper);
         return Result.success(new ResultPage(data.getTotal(), data.getRecords()));
     }

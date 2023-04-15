@@ -1,14 +1,14 @@
 package com.blog.utils;
 
+import com.blog.config.properties.JWTProperties;
 import com.blog.handler.exception.customs.SystemException;
 import io.jsonwebtoken.*;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
@@ -17,25 +17,21 @@ import java.util.*;
 /**
  * jwt工具类
  *
- * @author 何同学
+ * @author hy
  * @version 1.0
  */
-@Data
 @Slf4j
-@ConfigurationProperties("jwt.config")
 @Component
 public class JWTUtil {
-    private String secret;
-    private String header = "Authorization";
-    private Long expiration = null;
-    private String headPrefix = "Bearer ";
-    private Boolean isHead = true;
+
+    @Resource
+    private JWTProperties jwtProperties;
 
     public String conversionToken(String token) {
-        if (isHead) {
-            if (!StringUtils.startsWithIgnoreCase(token, headPrefix))
+        if (jwtProperties.getIsHead()) {
+            if (!StringUtils.startsWithIgnoreCase(token, jwtProperties.getHeadPrefix()))
                 throw new SystemException("JWT类型错误");
-            return token.substring(headPrefix.length());
+            return token.substring(jwtProperties.getHeadPrefix().length());
         }
         return token;
     }
@@ -52,13 +48,14 @@ public class JWTUtil {
         long currentTimeMillis = getCurrentTimeMillis();
         return Jwts.builder().setHeaderParam("typ", "JWT").setId(getUUID()).setClaims(claims)
                 .setIssuedAt(new Date(currentTimeMillis))
-                .setExpiration(Objects.isNull(expiration) ? null : new Date(currentTimeMillis + expiration * 1000))
+                .setExpiration(Objects.isNull(jwtProperties.getExpiration()) ? null : new Date(currentTimeMillis + jwtProperties.getExpiration() * 1000))
                 .signWith(SignatureAlgorithm.HS512, generalKey()).compact();
     }
 
     public Claims getClaims(String token) {
         try {
-            return Jwts.parser().setSigningKey(secret).parseClaimsJws(conversionToken(token)).getBody();
+            return Jwts.parser().setSigningKey(jwtProperties.getSecret()).parseClaimsJws(conversionToken(token))
+                    .getBody();
         } catch (ExpiredJwtException e) {
             log.error("JWT过期");
             throw new SystemException("JWT过期", e);
@@ -86,7 +83,7 @@ public class JWTUtil {
     }
 
     private SecretKey generalKey() {
-        byte[] encodedKey = Base64.getDecoder().decode(secret.getBytes(StandardCharsets.UTF_8));
+        byte[] encodedKey = Base64.getDecoder().decode(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8));
         return new SecretKeySpec(encodedKey, 0, encodedKey.length, "AES");
     }
 }

@@ -3,7 +3,7 @@ package com.blog.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.blog.constants.SystemConstants;
+import com.blog.constants.SystemConstant;
 import com.blog.domain.dto.Result;
 import com.blog.domain.dto.ResultPage;
 import com.blog.domain.entity.Tags;
@@ -41,8 +41,9 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tags> implements TagS
     @Override
     public Result selectPage(SearchVo searchVo) {
         LambdaQueryWrapper<Tags> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Tags::getStatus, SystemConstants.STATUS_ENABLED);
-        wrapper.like(Objects.nonNull(searchVo.getName()), Tags::getName, searchVo.getName());
+        wrapper.eq(Tags::getStatus, SystemConstant.STATUS_ENABLED)
+                .like(Objects.nonNull(searchVo.getKeywords()), Tags::getName, searchVo.getKeywords())
+                .orderByDesc(Tags::getId);
         Page<Tags> data = tagMapper.selectPage(MBPUtil.generatePage(searchVo, Tags.class), wrapper);
         return Result.success(new ResultPage(data.getTotal(), data.getRecords()));
     }
