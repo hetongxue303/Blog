@@ -5,10 +5,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.blog.domain.dto.Result;
 import com.blog.domain.dto.ResultPage;
-import com.blog.domain.entity.OperationLog;
+import com.blog.domain.entity.Log;
 import com.blog.domain.vo.SearchVo;
-import com.blog.mapper.OperationLogMapper;
-import com.blog.service.OperationLogService;
+import com.blog.mapper.LogMapper;
+import com.blog.service.LogService;
 import com.blog.utils.MBPUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,20 +18,20 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 操作日志业务处理
+ * 日志业务处理
  *
  * @author hy
  * @version 1.0
  */
 @Service
-public class OperationLogServiceImpl extends ServiceImpl<OperationLogMapper, OperationLog> implements OperationLogService {
+public class LogServiceImpl extends ServiceImpl<LogMapper, Log> implements LogService {
 
     @Resource
-    private OperationLogMapper operationLogMapper;
+    private LogMapper operationLogMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveOperationLog(OperationLog operationLog) {
+    public void saveOperationLog(Log operationLog) {
         operationLogMapper.insert(operationLog);
     }
 
@@ -49,11 +49,11 @@ public class OperationLogServiceImpl extends ServiceImpl<OperationLogMapper, Ope
 
     @Override
     public Result selectList(SearchVo searchVo) {
-        LambdaQueryWrapper<OperationLog> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(Objects.nonNull(searchVo.getKeywords()), OperationLog::getOptModule, searchVo.getKeywords()).or()
-                .like(Objects.nonNull(searchVo.getKeywords()), OperationLog::getOptDesc, searchVo.getKeywords())
-                .orderByDesc(OperationLog::getId);
-        Page<OperationLog> data = operationLogMapper.selectPage(MBPUtil.generatePage(searchVo, OperationLog.class), wrapper);
+        LambdaQueryWrapper<Log> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(Objects.nonNull(searchVo.getKeywords()), Log::getOptModule, searchVo.getKeywords()).or()
+                .like(Objects.nonNull(searchVo.getKeywords()), Log::getOptDesc, searchVo.getKeywords())
+                .orderByDesc(Log::getId);
+        Page<Log> data = operationLogMapper.selectPage(MBPUtil.generatePage(searchVo, Log.class), wrapper);
         return Result.success(new ResultPage(data.getTotal(), data.getRecords()));
     }
 }

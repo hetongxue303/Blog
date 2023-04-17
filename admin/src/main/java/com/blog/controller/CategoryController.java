@@ -34,7 +34,7 @@ public class CategoryController {
         return categoryService.selectAll();
     }
 
-    @GetMapping("page")
+    @GetMapping("list")
     @Logging("分页/搜索分类")
     @Operation(summary = "分页/搜索分类")
     public Result getCategoryPage(SearchVo searchVo) {

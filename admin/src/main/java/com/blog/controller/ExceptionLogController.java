@@ -1,7 +1,7 @@
 package com.blog.controller;
 
-import com.blog.annotation.OperationLogging;
-import com.blog.constants.OptTypeConstant;
+import com.blog.annotation.LogRecord;
+import com.blog.constants.LogTypeConstant;
 import com.blog.domain.dto.Result;
 import com.blog.domain.vo.SearchVo;
 import com.blog.service.ExceptionLogService;
@@ -27,14 +27,14 @@ public class ExceptionLogController {
         return Result.success(exceptionLogService.selectList(searchVo));
     }
 
-    @OperationLogging(OptTypeConstant.DELETE)
+    @LogRecord(LogTypeConstant.DELETE)
     @Operation(summary = "批量删除异常日志")
     @DeleteMapping("batchDelete")
     public Result batchDeleteException(@RequestBody List<Long> ids) {
         return exceptionLogService.batchDeleteException(ids);
     }
 
-    @OperationLogging(OptTypeConstant.DELETE)
+    @LogRecord(LogTypeConstant.DELETE)
     @Operation(summary = "删除异常日志")
     @DeleteMapping("delete/{id}")
     public Result batchDeleteException(@PathVariable("id") Long id) {

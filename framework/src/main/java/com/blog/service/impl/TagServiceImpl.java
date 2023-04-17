@@ -3,7 +3,6 @@ package com.blog.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.blog.constants.SystemConstant;
 import com.blog.domain.dto.Result;
 import com.blog.domain.dto.ResultPage;
 import com.blog.domain.entity.Tags;
@@ -22,7 +21,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 标签业务实现
+ * 标签业务处理
  *
  * @author hy
  * @version 1.0
@@ -41,8 +40,8 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tags> implements TagS
     @Override
     public Result selectList(SearchVo searchVo) {
         LambdaQueryWrapper<Tags> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Tags::getStatus, SystemConstant.STATUS_ENABLED)
-                .like(Objects.nonNull(searchVo.getKeywords()), Tags::getName, searchVo.getKeywords())
+        //        wrapper.eq(Tags::getStatus, SystemConstant.STATUS_ENABLED)
+        wrapper.like(Objects.nonNull(searchVo.getKeywords()), Tags::getName, searchVo.getKeywords())
                 .orderByDesc(Tags::getId);
         Page<Tags> data = tagMapper.selectPage(MBPUtil.generatePage(searchVo, Tags.class), wrapper);
         return Result.success(new ResultPage(data.getTotal(), data.getRecords()));
@@ -68,7 +67,7 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tags> implements TagS
         LambdaQueryWrapper<Tags> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Objects.nonNull(tagVo.getName()), Tags::getName, tagVo.getName());
         Tags tags = tagMapper.selectOne(wrapper);
-        if (Objects.nonNull(tags) && Objects.deepEquals(tagVo.getId(), tags.getId()))
+        if (Objects.nonNull(tags) && !Objects.deepEquals(tagVo.getId(), tags.getId()))
             throw new SystemException("标签名已存在");
         // 2.保存标签 并返回结果
         return Result.isStatus(tagMapper.updateById(BeanCopyUtil.copyBean(tagVo, Tags.class)));

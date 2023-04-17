@@ -23,9 +23,11 @@ public class SearchVo implements Serializable {
 
     @Schema(title = "当前页")
     private Long current;
+
     @Schema(title = "页面条数")
     private Long size;
 
     @Schema(title = "关键字")
     private String keywords;
+
 }

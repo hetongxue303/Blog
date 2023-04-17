@@ -25,20 +25,19 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
   # redis 配置
-  data:
-    redis:
-      host: 47.113.147.153
-      port: 6379
-      username:
-      password: 123456
-      database: 0
-      timeout: 5000
-      lettuce:
-        pool:
-          max-active: 50
-          max-wait: 3000
-          max-idle: 20
-          min-idle: 2
+  redis:
+    host: 47.113.147.153
+    port: 6379
+    username:
+    password: 123456
+    database: 0
+    timeout: 5000
+    lettuce:
+      pool:
+        max-active: 50
+        max-wait: 3000
+        max-idle: 20
+        min-idle: 2
 
   # 自定义配置
   config:

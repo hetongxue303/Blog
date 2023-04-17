@@ -11,7 +11,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum CustomMessage {
+public enum HttpMessageEnum {
 
     REQUEST_SUCCESS("请求成功"),
     REQUEST_ERROR("请求失败"),

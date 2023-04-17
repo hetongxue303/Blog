@@ -2,7 +2,7 @@ package com.blog.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.blog.domain.dto.Result;
-import com.blog.domain.entity.OperationLog;
+import com.blog.domain.entity.Log;
 import com.blog.domain.vo.SearchVo;
 
 import java.util.List;
@@ -13,12 +13,12 @@ import java.util.List;
  * @author hy
  * @version 1.0
  */
-public interface OperationLogService extends IService<OperationLog> {
+public interface LogService extends IService<Log> {
 
     /**
      * 通过监听添加日志
      */
-    void saveOperationLog(OperationLog operationLog);
+    void saveOperationLog(Log operationLog);
 
     Result selectList(SearchVo searchVo);
 

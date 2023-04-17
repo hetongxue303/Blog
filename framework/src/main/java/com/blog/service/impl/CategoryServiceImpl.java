@@ -3,7 +3,6 @@ package com.blog.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.blog.constants.SystemConstant;
 import com.blog.domain.dto.Result;
 import com.blog.domain.dto.ResultPage;
 import com.blog.domain.entity.Category;
@@ -22,7 +21,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 分类业务实现
+ * 分类业务处理
  *
  * @author hy
  * @version 1.0
@@ -41,8 +40,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     @Override
     public Result selectList(SearchVo searchVo) {
         LambdaQueryWrapper<Category> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Category::getStatus, SystemConstant.STATUS_ENABLED)
-                .like(Objects.nonNull(searchVo.getKeywords()), Category::getName, searchVo.getKeywords())
+        //        wrapper.eq(Category::getStatus, SystemConstant.STATUS_ENABLED)
+        wrapper.like(Objects.nonNull(searchVo.getKeywords()), Category::getName, searchVo.getKeywords())
                 .orderByDesc(Category::getId);
         Page<Category> data = categoryMapper.selectPage(MBPUtil.generatePage(searchVo, Category.class), wrapper);
         return Result.success(new ResultPage(data.getTotal(), data.getRecords()));
@@ -67,7 +66,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         LambdaQueryWrapper<Category> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Objects.nonNull(CategoryVo.getName()), Category::getName, CategoryVo.getName());
         Category category = categoryMapper.selectOne(wrapper);
-        if (Objects.nonNull(category) && Objects.deepEquals(CategoryVo.getId(), category.getId()))
+        if (Objects.nonNull(category) && !Objects.deepEquals(CategoryVo.getId(), category.getId()))
             throw new SystemException("分类名已存在");
         // 2.保存标签 并返回结果
         return Result.isStatus(categoryMapper.updateById(BeanCopyUtil.copyBean(CategoryVo, Category.class)));

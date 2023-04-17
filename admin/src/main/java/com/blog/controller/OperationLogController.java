@@ -1,10 +1,10 @@
 package com.blog.controller;
 
-import com.blog.annotation.OperationLogging;
-import com.blog.constants.OptTypeConstant;
+import com.blog.annotation.LogRecord;
+import com.blog.constants.LogTypeConstant;
 import com.blog.domain.dto.Result;
 import com.blog.domain.vo.SearchVo;
-import com.blog.service.OperationLogService;
+import com.blog.service.LogService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ import java.util.List;
 public class OperationLogController {
 
     @Resource
-    private OperationLogService operationLogService;
+    private LogService operationLogService;
 
     @Operation(summary = "查看操作日志")
     @GetMapping("list")
@@ -27,14 +27,14 @@ public class OperationLogController {
         return operationLogService.selectList(searchVo);
     }
 
-    @OperationLogging(OptTypeConstant.DELETE)
+    @LogRecord(LogTypeConstant.DELETE)
     @Operation(summary = "删除操作日志")
     @DeleteMapping("delete/{id}")
     public Result deleteOperationLogs(@PathVariable("id") Long id) {
         return operationLogService.deleteOperationLogs(id);
     }
 
-    @OperationLogging(OptTypeConstant.DELETE)
+    @LogRecord(LogTypeConstant.DELETE)
     @Operation(summary = "批量删除操作日志")
     @DeleteMapping("batchDelete")
     public Result deleteOperationLogs(@RequestBody List<Long> ids) {

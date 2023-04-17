@@ -1,11 +1,11 @@
 package com.blog.aspect;
 
 import com.alibaba.fastjson2.JSON;
-import com.blog.annotation.OperationLogging;
+import com.blog.annotation.LogRecord;
 import com.blog.domain.entity.ExceptionLog;
-import com.blog.handler.event.ExceptionLogEvent;
-import com.blog.utils.ExceptionUtil;
+import com.blog.handler.listener.event.ExceptionLogEvent;
 import com.blog.utils.IPUtil;
+import com.blog.utils.WebUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
@@ -45,7 +45,7 @@ public class ExceptionLogAspect {
         ExceptionLog exceptionLog = new ExceptionLog();
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
-        OperationLogging operationLogging = method.getAnnotation(OperationLogging.class);
+        LogRecord operationLogging = method.getAnnotation(LogRecord.class);
         exceptionLog.setOptUri(Objects.requireNonNull(request).getRequestURI());
         String className = joinPoint.getTarget().getClass().getName();
         String methodName = method.getName();
@@ -64,7 +64,7 @@ public class ExceptionLogAspect {
         } else {
             exceptionLog.setOptDesc("");
         }
-        exceptionLog.setExceptionInfo(ExceptionUtil.getTrace(e));
+        exceptionLog.setExceptionInfo(WebUtil.getTrace(e));
         String ipAddress = IPUtil.getIpAddress(request);
         exceptionLog.setIpAddress(ipAddress);
         exceptionLog.setIpSource(IPUtil.getIpSource(ipAddress));

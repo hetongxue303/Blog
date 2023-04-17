@@ -7,10 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 日志操作模型
+ * 日志实体
  *
  * @author hy
  * @version 1.0
@@ -19,13 +20,13 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-@TableName("blog_operation_log")
-@Schema(name = "日志操作模型")
-public class OperationLog {
+@TableName("blog_log")
+@Schema(name = "日志实体")
+public class Log implements Serializable {
 
     @TableId
     @Schema(title = "ID")
-    private Integer id;
+    private Long id;
 
     @Schema(title = "操作模块")
     private String optModule;

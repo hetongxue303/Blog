@@ -1,4 +1,4 @@
-package com.blog.handler.event;
+package com.blog.handler.listener.event;
 
 import com.blog.domain.entity.ExceptionLog;
 import org.springframework.context.ApplicationEvent;

@@ -11,7 +11,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum CustomStatus {
+public enum HttpStatusEnum {
     UNKNOWN_EXCEPTION(5000, "未知异常");
 
     private final Integer code;

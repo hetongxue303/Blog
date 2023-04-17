@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 异常日志业务实现
+ * 异常日志业务处理
  *
  * @author hy
  * @version 1.0

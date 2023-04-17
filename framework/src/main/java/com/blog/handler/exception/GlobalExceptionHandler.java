@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
         return Result.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(SystemException.class)
     public Result handlerSystemException(SystemException e) {
         log.error(e.getMessage());

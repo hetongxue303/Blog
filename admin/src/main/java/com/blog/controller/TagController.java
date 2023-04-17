@@ -1,6 +1,8 @@
 package com.blog.controller;
 
+import com.blog.annotation.LogRecord;
 import com.blog.annotation.Logging;
+import com.blog.constants.LogTypeConstant;
 import com.blog.domain.dto.Result;
 import com.blog.domain.vo.SearchVo;
 import com.blog.domain.vo.TagVo;
@@ -37,14 +39,16 @@ public class TagController {
     @GetMapping("list")
     @Logging("分页/搜索标签")
     @Operation(summary = "分页/搜索标签")
-    public Result getTagPage(SearchVo searchVo) {
+    public Result getTagList(SearchVo searchVo) {
         return tagService.selectList(searchVo);
     }
 
     @PostMapping("add")
     @Logging("添加标签")
     @Operation(summary = "添加标签")
+    @LogRecord(LogTypeConstant.SAVE)
     public Result addTag(@Valid @RequestBody TagVo tagVo) {
+        System.out.println("tagVo = " + tagVo);
         return tagService.saveTag(tagVo);
     }
 

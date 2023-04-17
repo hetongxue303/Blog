@@ -1,10 +1,10 @@
 package com.blog.aspect;
 
 import com.alibaba.fastjson2.JSON;
-import com.blog.annotation.OperationLogging;
-import com.blog.domain.entity.OperationLog;
+import com.blog.annotation.LogRecord;
+import com.blog.domain.entity.Log;
+import com.blog.handler.listener.event.LogEvent;
 import com.blog.utils.IPUtil;
-import com.blog.handler.event.OperationLogEvent;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.aspectj.lang.JoinPoint;
@@ -32,26 +32,26 @@ import java.util.Objects;
 @Aspect
 @Component
 @SuppressWarnings("all")
-public class OperationLogAspect {
+public class LogRecordAspect {
 
     @Resource
     private ApplicationContext applicationContext;
 
-    @Pointcut("@annotation(com.blog.annotation.OperationLogging)")
-    public void operationLogPointCut() {
+    @Pointcut("@annotation(com.blog.annotation.LogRecord)")
+    public void LogRecordPointCut() {
     }
 
-    @AfterReturning(value = "operationLogPointCut()", returning = "keys")
+    @AfterReturning(value = "LogRecordPointCut()", returning = "keys")
     public void saveOperationLog(JoinPoint joinPoint, Object keys) {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = (HttpServletRequest) Objects.requireNonNull(requestAttributes)
                 .resolveReference(RequestAttributes.REFERENCE_REQUEST);
-        OperationLog operationLog = new OperationLog();
+        Log operationLog = new Log();
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         Tag tag = (Tag) signature.getDeclaringType().getAnnotation(Tag.class);
         Operation operation = method.getAnnotation(Operation.class);
-        OperationLogging operationLogging = method.getAnnotation(OperationLogging.class);
+        LogRecord operationLogging = method.getAnnotation(LogRecord.class);
         operationLog.setOptModule(tag.name());
         operationLog.setOptType(operation.summary());
         operationLog.setOptDesc(operationLogging.value());
@@ -74,7 +74,7 @@ public class OperationLogAspect {
         operationLog.setIpAddress(ipAddress);
         operationLog.setIpSource(IPUtil.getIpSource(ipAddress));
         operationLog.setOptUri(request.getRequestURI());
-        applicationContext.publishEvent(new OperationLogEvent(operationLog));
+        applicationContext.publishEvent(new LogEvent(operationLog));
     }
 
 }

@@ -1,6 +1,6 @@
 package com.blog.constants;
 
-public interface OptTypeConstant {
+public interface LogTypeConstant {
 
     String SAVE_OR_UPDATE = "新增或修改";
 

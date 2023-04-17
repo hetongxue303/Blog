@@ -3,7 +3,7 @@ package com.blog.annotation;
 import java.lang.annotation.*;
 
 /**
- * 操作日志注解
+ * 日志记录注解
  *
  * @author hy
  * @version 1.0
@@ -11,6 +11,6 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface OperationLogging {
+public @interface LogRecord {
     String value() default "";
 }

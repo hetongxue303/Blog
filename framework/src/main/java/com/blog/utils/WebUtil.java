@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import static com.blog.constants.CommonConstant.APPLICATION_JSON;
 
@@ -35,7 +37,13 @@ public class WebUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
+    public static String getTrace(Throwable t) {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        t.printStackTrace(writer);
+        StringBuffer buffer = stringWriter.getBuffer();
+        return buffer.toString();
+    }
 }

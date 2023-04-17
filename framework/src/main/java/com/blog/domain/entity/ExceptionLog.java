@@ -7,15 +7,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 异常日志实体
+ *
+ * @author hy
+ * @version 1.0
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
 @TableName("blog_exception_log")
-@Schema(name = "异常日志模型")
-public class ExceptionLog {
+@Schema(name = "异常日志实体")
+public class ExceptionLog implements Serializable {
 
     @TableId
     @Schema(title = "异常日志ID")

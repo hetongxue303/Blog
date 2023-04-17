@@ -1,11 +1,11 @@
 package com.blog.handler.listener;
 
 import com.blog.domain.entity.ExceptionLog;
-import com.blog.domain.entity.OperationLog;
-import com.blog.handler.event.ExceptionLogEvent;
-import com.blog.handler.event.OperationLogEvent;
+import com.blog.domain.entity.Log;
+import com.blog.handler.listener.event.ExceptionLogEvent;
+import com.blog.handler.listener.event.LogEvent;
 import com.blog.service.ExceptionLogService;
-import com.blog.service.OperationLogService;
+import com.blog.service.LogService;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -22,14 +22,14 @@ import javax.annotation.Resource;
 public class GlobalListener {
 
     @Resource
-    private OperationLogService operationLogService;
+    private LogService operationLogService;
     @Resource
     private ExceptionLogService exceptionLogService;
 
     @Async
-    @EventListener(OperationLogService.class)
-    public void saveOperationLog(OperationLogEvent operationLogEvent) {
-        operationLogService.saveOperationLog((OperationLog) operationLogEvent.getSource());
+    @EventListener(LogService.class)
+    public void saveOperationLog(LogEvent logEvent) {
+        operationLogService.saveOperationLog((Log) logEvent.getSource());
     }
 
     @Async
