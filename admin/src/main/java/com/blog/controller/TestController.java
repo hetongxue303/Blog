@@ -1,6 +1,6 @@
 package com.blog.controller;
 
-import com.blog.annotation.Logging;
+import com.blog.annotation.LogPrint;
 import com.blog.domain.dto.Result;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,7 +25,7 @@ public class TestController {
     @Operation(summary = "测试方法", description = "测试方法描述")
     @Parameters({@Parameter(name = "name", description = "你的姓名", required = true)})
     @ApiResponses({@ApiResponse(responseCode = "200", description = "请求成功"), @ApiResponse(responseCode = "400", description = "请求失败")})
-    @Logging("测试接口被调用")
+    @LogPrint("测试接口被调用")
     public Result test() {
         return Result.success("hello,blog!");
     }

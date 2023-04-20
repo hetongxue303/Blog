@@ -1,7 +1,7 @@
 package com.blog.aspect;
 
 import com.alibaba.fastjson2.JSON;
-import com.blog.annotation.Logging;
+import com.blog.annotation.LogPrint;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
 /**
- * 日志注解切面
+ * 日志打印注解切面
  *
  * @author hy
  * @version 1.0
@@ -24,16 +24,16 @@ import java.util.Objects;
 @Slf4j
 @Aspect
 @Component
-public class LoggingAspect {
+public class LogPrintAspect {
 
-    @Pointcut("@annotation(com.blog.annotation.Logging)")
-    public void logging() {
+    @Pointcut("@annotation(com.blog.annotation.LogPrint)")
+    public void logPrint() {
     }
 
-    @Around("logging()")
+    @Around("logPrint()")
     public Object handlerLogging(ProceedingJoinPoint joinPoint) throws Throwable {
         long beginTime = System.currentTimeMillis();
-        Logging logging = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(Logging.class);
+        LogPrint logging = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(LogPrint.class);
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         log.info("===============================begin===============================");
         log.info("value          : {}", logging.value());

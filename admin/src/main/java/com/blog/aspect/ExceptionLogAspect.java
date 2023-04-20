@@ -1,11 +1,11 @@
 package com.blog.aspect;
 
 import com.alibaba.fastjson2.JSON;
-import com.blog.annotation.LogRecord;
 import com.blog.domain.entity.ExceptionLog;
 import com.blog.handler.listener.event.ExceptionLogEvent;
 import com.blog.utils.IPUtil;
 import com.blog.utils.WebUtil;
+import io.swagger.v3.oas.annotations.Operation;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
@@ -42,11 +42,13 @@ public class ExceptionLogAspect {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = (HttpServletRequest) Objects.requireNonNull(requestAttributes)
                 .resolveReference(RequestAttributes.REFERENCE_REQUEST);
+
         ExceptionLog exceptionLog = new ExceptionLog();
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
-        LogRecord operationLogging = method.getAnnotation(LogRecord.class);
+        Operation operation = method.getAnnotation(Operation.class);
         exceptionLog.setOptUri(Objects.requireNonNull(request).getRequestURI());
+
         String className = joinPoint.getTarget().getClass().getName();
         String methodName = method.getName();
         methodName = className + "." + methodName;
@@ -59,8 +61,8 @@ public class ExceptionLogAspect {
                 exceptionLog.setRequestParam(JSON.toJSONString(joinPoint.getArgs()));
             }
         }
-        if (Objects.nonNull(operationLogging)) {
-            exceptionLog.setOptDesc(operationLogging.value());
+        if (Objects.nonNull(operation)) {
+            exceptionLog.setOptDesc(operation.summary());
         } else {
             exceptionLog.setOptDesc("");
         }
@@ -68,6 +70,7 @@ public class ExceptionLogAspect {
         String ipAddress = IPUtil.getIpAddress(request);
         exceptionLog.setIpAddress(ipAddress);
         exceptionLog.setIpSource(IPUtil.getIpSource(ipAddress));
+        System.err.println("exceptionLog = " + exceptionLog);
         applicationContext.publishEvent(new ExceptionLogEvent(exceptionLog));
     }
 

@@ -89,4 +89,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         // 2.删除标签 并返回结果
         return Result.isStatus(categoryMapper.deleteBatchIds(ids));
     }
+
+    @Override
+    public Result searchCategory(String keywords) {
+        return Result.success(categoryMapper.selectList(new LambdaQueryWrapper<Category>().like(Objects.nonNull(keywords), Category::getName, keywords)));
+    }
 }

@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-@TableName("blog_tags")
+@TableName("b_tags")
 @Schema(name = "标签实体")
 public class Tags implements Serializable {
 

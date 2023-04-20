@@ -1,5 +1,7 @@
 package com.blog.annotation;
 
+import com.blog.constants.LogTypeConstant;
+
 import java.lang.annotation.*;
 
 /**
@@ -12,5 +14,5 @@ import java.lang.annotation.*;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LogRecord {
-    String value() default "";
+    String value() default LogTypeConstant.UNKNOWN;
 }

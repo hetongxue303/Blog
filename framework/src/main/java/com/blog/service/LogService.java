@@ -15,9 +15,6 @@ import java.util.List;
  */
 public interface LogService extends IService<Log> {
 
-    /**
-     * 通过监听添加日志
-     */
     void saveOperationLog(Log operationLog);
 
     Result selectList(SearchVo searchVo);

@@ -57,4 +57,5 @@ public interface CategoryService extends IService<Category> {
      */
     Result batchDeleteCategory(List<Long> ids);
 
+    Result searchCategory(String keywords);
 }

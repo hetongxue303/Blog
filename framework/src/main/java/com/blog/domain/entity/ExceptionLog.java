@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-@TableName("blog_exception_log")
+@TableName("b_exception_log")
 @Schema(name = "异常日志实体")
 public class ExceptionLog implements Serializable {
 
@@ -51,10 +51,6 @@ public class ExceptionLog implements Serializable {
 
     @Schema(title = "IP来源")
     private String ipSource;
-
-    @Schema(title = "操作时间")
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime operationTime;
 
     @TableLogic
     @Schema(title = "是否删除", description = "0：未删除(默认) 1：已删除")

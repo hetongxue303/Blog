@@ -21,23 +21,23 @@ public class ExceptionLogController {
     @Resource
     private ExceptionLogService exceptionLogService;
 
+    @GetMapping("list")
     @Operation(summary = "获取异常日志")
-    @GetMapping("logs")
     public Result listExceptionLogs(@Valid @RequestBody SearchVo searchVo) {
         return Result.success(exceptionLogService.selectList(searchVo));
     }
 
-    @LogRecord(LogTypeConstant.DELETE)
-    @Operation(summary = "批量删除异常日志")
     @DeleteMapping("batchDelete")
+    @Operation(summary = "批量删除异常日志")
+    @LogRecord(LogTypeConstant.BATCH_DELETE)
     public Result batchDeleteException(@RequestBody List<Long> ids) {
         return exceptionLogService.batchDeleteException(ids);
     }
 
-    @LogRecord(LogTypeConstant.DELETE)
-    @Operation(summary = "删除异常日志")
     @DeleteMapping("delete/{id}")
-    public Result batchDeleteException(@PathVariable("id") Long id) {
+    @Operation(summary = "删除异常日志")
+    @LogRecord(LogTypeConstant.DELETE)
+    public Result deleteException(@PathVariable("id") Long id) {
         return exceptionLogService.deleteException(id);
     }
 

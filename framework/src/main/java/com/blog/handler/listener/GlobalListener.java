@@ -22,14 +22,14 @@ import javax.annotation.Resource;
 public class GlobalListener {
 
     @Resource
-    private LogService operationLogService;
+    private LogService logService;
     @Resource
     private ExceptionLogService exceptionLogService;
 
     @Async
     @EventListener(LogService.class)
     public void saveOperationLog(LogEvent logEvent) {
-        operationLogService.saveOperationLog((Log) logEvent.getSource());
+        logService.saveOperationLog((Log) logEvent.getSource());
     }
 
     @Async

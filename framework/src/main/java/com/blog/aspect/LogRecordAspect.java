@@ -46,35 +46,39 @@ public class LogRecordAspect {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = (HttpServletRequest) Objects.requireNonNull(requestAttributes)
                 .resolveReference(RequestAttributes.REFERENCE_REQUEST);
-        Log operationLog = new Log();
+
+        Log log = new Log();
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         Tag tag = (Tag) signature.getDeclaringType().getAnnotation(Tag.class);
         Operation operation = method.getAnnotation(Operation.class);
-        LogRecord operationLogging = method.getAnnotation(LogRecord.class);
-        operationLog.setOptModule(tag.name());
-        operationLog.setOptType(operation.summary());
-        operationLog.setOptDesc(operationLogging.value());
+        LogRecord logRecord = method.getAnnotation(LogRecord.class);
+        log.setOptModule(tag.name());
+        log.setOptType(logRecord.value());
+        log.setOptDesc(operation.summary());
+
         String className = joinPoint.getTarget().getClass().getName();
         String methodName = method.getName();
         methodName = className + "." + methodName;
-        operationLog.setRequestMethod(Objects.requireNonNull(request).getMethod());
-        operationLog.setOptMethod(methodName);
+        log.setRequestMethod(Objects.requireNonNull(request).getMethod());
+        log.setOptMethod(methodName);
         if (joinPoint.getArgs().length > 0) {
             if (joinPoint.getArgs()[0] instanceof MultipartFile) {
-                operationLog.setRequestParam("file");
+                log.setRequestParam("file");
             } else {
-                operationLog.setRequestParam(JSON.toJSONString(joinPoint.getArgs()));
+                log.setRequestParam(JSON.toJSONString(joinPoint.getArgs()));
             }
         }
-        operationLog.setResponseData(JSON.toJSONString(keys));
-        operationLog.setUserId(1L);
-        operationLog.setNickname("test");
+        log.setResponseData(JSON.toJSONString(keys));
+        log.setUserId(1L);
+        log.setNickname("test");
+
         String ipAddress = IPUtil.getIpAddress(request);
-        operationLog.setIpAddress(ipAddress);
-        operationLog.setIpSource(IPUtil.getIpSource(ipAddress));
-        operationLog.setOptUri(request.getRequestURI());
-        applicationContext.publishEvent(new LogEvent(operationLog));
+        log.setIpAddress(ipAddress);
+        log.setIpSource(IPUtil.getIpSource(ipAddress));
+        log.setOptUri(request.getRequestURI());
+        System.err.println("log = " + log);
+        applicationContext.publishEvent(new LogEvent(log));
     }
 
 }

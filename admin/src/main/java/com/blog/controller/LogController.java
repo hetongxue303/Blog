@@ -13,32 +13,39 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * 日志模块
+ *
+ * @author hy
+ * @version 1.0
+ */
 @RestController
 @RequestMapping("log")
-@Tag(name = "操作日志模块")
-public class OperationLogController {
+@Tag(name = "日志模块")
+public class LogController {
 
     @Resource
-    private LogService operationLogService;
+    private LogService logService;
 
-    @Operation(summary = "查看操作日志")
     @GetMapping("list")
+    @Operation(summary = "查看操作日志")
+
     public Result listOperationLogs(@Valid @RequestBody SearchVo searchVo) {
-        return operationLogService.selectList(searchVo);
+        return logService.selectList(searchVo);
     }
 
-    @LogRecord(LogTypeConstant.DELETE)
-    @Operation(summary = "删除操作日志")
     @DeleteMapping("delete/{id}")
+    @Operation(summary = "删除操作日志")
+    @LogRecord(LogTypeConstant.DELETE)
     public Result deleteOperationLogs(@PathVariable("id") Long id) {
-        return operationLogService.deleteOperationLogs(id);
+        return logService.deleteOperationLogs(id);
     }
 
-    @LogRecord(LogTypeConstant.DELETE)
-    @Operation(summary = "批量删除操作日志")
     @DeleteMapping("batchDelete")
+    @Operation(summary = "批量删除操作日志")
+    @LogRecord(LogTypeConstant.BATCH_DELETE)
     public Result deleteOperationLogs(@RequestBody List<Long> ids) {
-        return operationLogService.batchDeleteOperationLogs(ids);
+        return logService.batchDeleteOperationLogs(ids);
     }
 
 }
