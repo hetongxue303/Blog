@@ -9,7 +9,6 @@ import com.blog.domain.entity.Article;
 import com.blog.domain.entity.ArticleTag;
 import com.blog.domain.vo.ArticleVo;
 import com.blog.domain.vo.SearchVo;
-import com.blog.handler.exception.customs.SystemException;
 import com.blog.mapper.ArticleMapper;
 import com.blog.mapper.ArticleTagMapper;
 import com.blog.service.ArticleService;
@@ -59,14 +58,16 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Transactional(rollbackFor = Exception.class)
     public Result saveArticle(ArticleVo articleVo) {
         Article article = BeanCopyUtil.copyBean(articleVo, Article.class);
-        if (Objects.nonNull(articleMapper.selectOne(new LambdaQueryWrapper<Article>().eq(Article::getTitle, article.getTitle()))))
-            throw new SystemException("文章标题已存在");
+        //        if (Objects.nonNull(articleMapper.selectOne(new LambdaQueryWrapper<Article>().eq(Article::getTitle, article.getTitle()))))
+        //            throw new SystemException("文章标题已存在");
         // 新增文章
         int status = articleMapper.insert(article);
         // 新增关联表
-        if (status > 0) {
-            status = articleTagMapper.insert(new ArticleTag().setArticleId(article.getId())
-                    .setTagId(article.getTagId()));
+        if (article.getStatus() == 1) {
+            if (status > 0) {
+                status = articleTagMapper.insert(new ArticleTag().setArticleId(article.getId())
+                        .setTagId(article.getTagId()));
+            }
         }
         return Result.isStatus(status);
     }

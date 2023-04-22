@@ -1,5 +1,6 @@
 package com.blog.utils;
 
+import com.blog.enums.QINiuPathEnum;
 import com.google.gson.Gson;
 import com.qiniu.http.Response;
 import com.qiniu.storage.Configuration;
@@ -30,12 +31,12 @@ public class QINiuUtil {
      *
      * @param file 文件
      */
-    public static String uploadFile(MultipartFile file) {
+    public static String uploadImg(MultipartFile file, QINiuPathEnum pathEnum) {
         try {
             configuration.resumableUploadAPIVersion = Configuration.ResumableUploadAPIVersion.V2;
             UploadManager uploadManager = new UploadManager(configuration);
             InputStream inputStream = file.getInputStream();
-            String key = FileUtil.generateFilePath(file, "avatar", null, null);
+            String key = FileUtil.generateFilePath(file, "images/" + pathEnum.getPath(), null, null);
             Auth auth = Auth.create(accessKey, secretKey);
             String upToken = auth.uploadToken(bucket);
             Response response = uploadManager.put(inputStream, key, upToken, null, null);

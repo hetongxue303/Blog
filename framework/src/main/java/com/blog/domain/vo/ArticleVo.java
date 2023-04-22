@@ -34,8 +34,8 @@ public class ArticleVo {
     @Schema(title = "分类ID")
     private Long categoryId;
 
-    @Schema(title = "缩略图")
-    private String thumbnail;
+    @Schema(title = "封面")
+    private String cover;
 
     @Schema(title = "标题")
     @NotBlank(message = "标题不能为空")
@@ -48,16 +48,16 @@ public class ArticleVo {
     private Boolean isTop;
 
     @Schema(title = "是否推荐", description = "0否(否) 1是")
-    private Integer isFeatured;
+    private Boolean isFeatured;
 
-    @Schema(title = "状态值", description = "1公开 2私密 3草稿(默认)")
-    private Boolean status;
+    @Schema(title = "状态值", description = "1已发布 2草稿(默认)")
+    private Integer status;
 
     @Schema(title = "类型", description = "1原创(默认) 2转载 3翻译")
     private Integer type;
 
-    @Schema(title = "访问密码", description = "无(默认)")
-    private String password;
+    @Schema(title = "权限", description = "1公开(默认) 2私有")
+    private Integer authority;
 
     @Schema(title = "原文链接")
     private String originalUrl;

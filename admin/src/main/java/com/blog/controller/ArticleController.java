@@ -7,9 +7,11 @@ import com.blog.domain.dto.Result;
 import com.blog.domain.vo.ArticleVo;
 import com.blog.domain.vo.SearchVo;
 import com.blog.service.ArticleService;
+import com.blog.service.FileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -28,6 +30,9 @@ public class ArticleController {
 
     @Resource
     private ArticleService ArticleService;
+
+    @Resource
+    private FileService fileService;
 
     @GetMapping("all")
     @LogPrint("查询所有文章")
@@ -75,5 +80,11 @@ public class ArticleController {
         return ArticleService.batchDeleteArticle(ids);
     }
 
+    @PostMapping("upload/images")
+    @LogRecord(LogTypeConstant.UPLOAD)
+    @Operation(summary = "上传封面图片")
+    public Result uploadImg(MultipartFile file) {
+        return fileService.uploadImage(file);
+    }
 
 }

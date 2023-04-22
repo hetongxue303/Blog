@@ -36,6 +36,13 @@ public class TagController {
         return tagService.selectAll();
     }
 
+    @GetMapping("search")
+    @LogPrint("搜索标签")
+    @Operation(summary = "搜索标签")
+    public Result searchCategory(String keywords) {
+        return tagService.searchTag(keywords);
+    }
+
     @GetMapping("list")
     @LogPrint("分页/搜索标签")
     @Operation(summary = "分页/搜索标签")

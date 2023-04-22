@@ -90,4 +90,9 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tags> implements TagS
         // 2.删除标签 并返回结果
         return Result.isStatus(tagMapper.deleteBatchIds(ids));
     }
+
+    @Override
+    public Result searchTag(String keywords) {
+        return Result.success(tagMapper.selectList(new LambdaQueryWrapper<Tags>().like(Objects.nonNull(keywords), Tags::getName, keywords)));
+    }
 }

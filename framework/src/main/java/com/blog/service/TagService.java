@@ -55,4 +55,6 @@ public interface TagService extends IService<Tags> {
      * @param ids 标签ID列表
      */
     Result batchDeleteTag(List<Long> ids);
+
+    Result searchTag(String keywords);
 }
