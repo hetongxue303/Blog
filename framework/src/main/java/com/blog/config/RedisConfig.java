@@ -35,7 +35,6 @@ public class RedisConfig {
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
-
         // String的序列化
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
         // 将对象序列化
